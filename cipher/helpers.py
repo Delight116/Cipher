@@ -20,15 +20,15 @@ def searchKey(text):
     print(text_len)
     for n in range(len(normal_alphabet)):
         for word in range(5):
+                print(text_len[word])
                 res = decrypt_texts(text_len[word], n)
-                params_lang = {'text': res, 'lang': 'en'}
-                print(params_lang)
+                params_lang = {'text': res['text'], 'lang': 'en'}
                 r = requests.get('http://speller.yandex.net/services/spellservice.json/checkText', params=params_lang)
-                print(r.status_code)
-                if r.status_code == 200 and len(r.json()) == 0 and r.status_code != 400:
+                if r.status_code == 200 and len(r.json()) == 0:
                     alphabets_key.append({'key': n})
     key = 0
     results = 0
+
     for n in range(len(alphabets_key)):
         test = alphabets_key.count(alphabets_key[n])
         if results < test:
@@ -64,8 +64,6 @@ def encrypt_texts(text, key):
             elif text[n].isdigit():
                 encrypt_text += text[n]
 
-    get_key_cipher(encrypt_text)
-    searchKey(encrypt_text)
     return encrypt_text
 
 

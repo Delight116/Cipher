@@ -34,17 +34,14 @@ class EncryptText(mixins.CreateModelMixin,
     @list_route(methods=['POST'])
     def decrypt(self, request):
         key = searchKey(request.data.get('text'))
-        print(key)
         result = decrypt_texts(request.data.get('text'), int(key))
         if not result:
             return Response({'decrypt': False})
 
-        print(result)
-
-        # cc = CaesarCipher.objects.create(
-        #     decrypt_text=result['text'],
-        #     encrypt_text=request.data.get('text'),
-        #     keys=result['key']
-        # )
-        # cc.save()
+        cc = CaesarCipher.objects.create(
+            decrypt_text=result['text'],
+            encrypt_text=request.data.get('text'),
+            keys=result['key']
+        )
+        cc.save()
         return Response({'decrypt': True})
